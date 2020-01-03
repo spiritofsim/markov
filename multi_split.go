@@ -14,9 +14,6 @@ func miltiSplit(data []byte, atEOF bool, cnt int, split bufio.SplitFunc, sep []b
 	advance := 0
 
 	for i := 0; i < cnt; i++ {
-		//if advance > len(data)-1{
-		//	advance = len(data)-1
-		//}
 		a, token, err := split(data[advance:], i == cnt-1)
 		if err != nil {
 			return advance, result, err

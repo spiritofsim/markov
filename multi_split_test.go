@@ -2,6 +2,7 @@ package markov
 
 import (
 	"bufio"
+	"errors"
 	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
@@ -41,6 +42,13 @@ func TestScanDoubleWords(t *testing.T) {
 	checkScanner(t, bufio.ScanWords, 2, "", "w1 w2", "w1w2")
 	checkScanner(t, bufio.ScanWords, 2, "", "w1 w2 w3", "w1w2", "w3")
 	checkScanner(t, bufio.ScanWords, 2, "", "w1 w2 w3 w4", "w1w2", "w3w4")
+}
+
+func TestSplitReturnsErr(t *testing.T) {
+	_, _, err := miltiSplit([]byte{0x01}, false, 1, func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+		return 0, []byte{}, errors.New("err")
+	}, []byte{})
+	require.Error(t, err)
 }
 
 func checkScanner(t *testing.T, splitter bufio.SplitFunc, count int, sep string, str string, expectations ...string) {

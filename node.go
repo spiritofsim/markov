@@ -12,7 +12,3 @@ func newNode(token string) *node {
 		next:  make(map[*node]int),
 	}
 }
-
-func (n node) String() string {
-	return n.Token
-}
