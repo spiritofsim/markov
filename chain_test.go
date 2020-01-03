@@ -9,14 +9,14 @@ import (
 )
 
 func TestNewChainWithOneNode(t *testing.T) {
-	c := NewChain(getWordsScaner("hello"))
+	c := NewChain(getStringWordsScanner("hello"))
 	require.Len(t, c.graph, 1)
 	require.Equal(t, "hello", c.graph["hello"].Token)
 	require.Empty(t, c.graph["hello"].next)
 }
 
 func TestNewChainWithLoopNodes(t *testing.T) {
-	c := NewChain(getWordsScaner("hello world hello"))
+	c := NewChain(getStringWordsScanner("hello world hello"))
 	require.Len(t, c.graph, 2)
 
 	helloNode := c.graph["hello"]
@@ -27,7 +27,7 @@ func TestNewChainWithLoopNodes(t *testing.T) {
 }
 
 func TestNewChainWeights(t *testing.T) {
-	c := NewChain(getWordsScaner("hello world hello world"))
+	c := NewChain(getStringWordsScanner("hello world hello world"))
 	require.Len(t, c.graph, 2)
 
 	helloNode := c.graph["hello"]
@@ -38,7 +38,7 @@ func TestNewChainWeights(t *testing.T) {
 }
 
 func TestNextOnAcyclicGraph(t *testing.T) {
-	c := NewChain(getWordsScaner("hello big world"))
+	c := NewChain(getStringWordsScanner("hello big world"))
 
 	token, err := c.Next("hello")
 	require.NoError(t, err)
@@ -53,7 +53,7 @@ func TestNextOnAcyclicGraph(t *testing.T) {
 }
 
 func TestRandNextNode(t *testing.T) {
-	c := NewChain(getWordsScaner(""))
+	c := NewChain(getStringWordsScanner(""))
 	i := 0
 	c.randInt = func(n int) int {
 		defer func() {
@@ -85,20 +85,20 @@ func TestRandNextNode(t *testing.T) {
 }
 
 func TestNextReturnsFirstNodeOnEmptyToken(t *testing.T) {
-	c := NewChain(getWordsScaner("hello big world"))
+	c := NewChain(getStringWordsScanner("hello big world"))
 
 	_, err := c.Next("")
 	require.NoError(t, err)
 }
 
 func TestNextReturnsNotFound(t *testing.T) {
-	c := NewChain(getWordsScaner("1"))
+	c := NewChain(getStringWordsScanner("1"))
 
 	_, err := c.Next("2")
 	require.EqualError(t, err, NotFound.Error())
 }
 
-func getWordsScaner(str string) *bufio.Scanner {
+func getStringWordsScanner(str string) *bufio.Scanner {
 	s := bufio.NewScanner(strings.NewReader(str))
 	s.Split(bufio.ScanWords)
 	return s
