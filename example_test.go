@@ -9,14 +9,16 @@ import (
 	"testing"
 )
 
-// Write like L.Tolstoy )
+// Write like L.Tolstoy :)
+
+// TestRunesSplitter demonstrates text generation based on blocks of runes
 func TestRunesSplitter(t *testing.T) {
 	printChainFromFile(t, "testdata/warandpeace.txt", bufio.ScanRunes, 3, "")
 	printChainFromFile(t, "testdata/warandpeace.txt", bufio.ScanRunes, 4, "")
 	printChainFromFile(t, "testdata/warandpeace.txt", bufio.ScanRunes, 5, "")
 }
 
-// Write like L.Tolstoy )
+// TestWordsSplitter demonstrates text generation based on blocks of words
 func TestWordsSplitter(t *testing.T) {
 	printChainFromFile(t, "testdata/warandpeace.txt", bufio.ScanWords, 1, " ")
 	printChainFromFile(t, "testdata/warandpeace.txt", bufio.ScanWords, 2, " ")
